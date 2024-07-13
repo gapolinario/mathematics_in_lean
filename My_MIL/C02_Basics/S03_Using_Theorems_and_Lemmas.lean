@@ -33,8 +33,8 @@ example (x y z : ℝ) (h₀ : x ≤ y) (h₁ : y ≤ z) : x ≤ z :=
 example (x : ℝ) : x ≤ x := by
   apply le_refl
 
-example (x : ℝ) : x ≤ x :=
-  le_refl x
+example (x : ℝ) : x ≤ x := by
+  apply le_refl x
 
 #check (le_refl : ∀ a, a ≤ a)
 #check (le_trans : a ≤ b → b ≤ c → a ≤ c)
@@ -44,7 +44,10 @@ example (x : ℝ) : x ≤ x :=
 
 -- Try this.
 example (h₀ : a ≤ b) (h₁ : b < c) (h₂ : c ≤ d) (h₃ : d < e) : a < e := by
-  sorry
+  have g₁: c < e := by apply lt_of_le_of_lt h₂ h₃
+  have g₂: a < c := by apply lt_of_le_of_lt h₀ h₁
+  apply lt_trans g₂ g₁
+
 
 example (h₀ : a ≤ b) (h₁ : b < c) (h₂ : c ≤ d) (h₃ : d < e) : a < e := by
   linarith
@@ -124,4 +127,3 @@ example : |a * b| ≤ (a ^ 2 + b ^ 2) / 2 := by
   sorry
 
 #check abs_le'.mpr
-
